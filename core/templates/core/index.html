@@ -1,0 +1,16 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Posts</title></head>
+<body>
+  <h1>Posts</h1>
+  {% for post in posts %}
+    <article>
+      <h2>{{ post.title }}</h2>
+      <p>{{ post.body|linebreaks }}</p>
+      <small>{{ post.created_at }}</small>
+    </article>
+  {% empty %}
+    <p>No posts yet.</p>
+  {% endfor %}
+</body>
+</html>
