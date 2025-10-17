@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kostyashki — Dice Clash</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, #0f172a, #020617);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    .game-container {
+      background: rgba(30, 41, 59, 0.9);
+      border-radius: 24px;
+      padding: 40px;
+      width: 420px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      background: linear-gradient(90deg, #22d3ee, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+    }
+
+    .dice-box {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin: 30px 0;
+    }
+
+    .die {
+      width: 90px;
+      height: 90px;
+      background: linear-gradient(145deg, #1e293b, #111827);
+      border-radius: 20px;
+      box-shadow: inset 3px 3px 8px #000, 0 0 10px rgba(59,130,246,0.3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 40px;
+      color: #38bdf8;
+      transition: transform 0.4s ease, box-shadow 0.3s ease;
+    }
+
+    .die.roll {
+      transform: rotate(720deg);
+      box-shadow: 0 0 20px #38bdf8;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #3b82f6, #0ea5e9);
+      border: none;
+      border-radius: 14px;
+      padding: 12px 26px;
+      font-size: 18px;
+      color: #fff;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+    }
+
+    .btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #2563eb, #0284c7);
+    }
+
+    .scoreboard {
+      margin-top: 25px;
+      font-size: 18px;
+    }
+
+    .score {
+      font-size: 36px;
+      margin-top: 10px;
+      color: #22d3ee;
+    }
+
+    .history {
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 10px;
+      padding: 10px;
+      font-size: 14px;
+      margin-top: 20px;
+      height: 120px;
+      overflow-y: auto;
+      text-align: left;
+    }
+
+    .spark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 20px;
+      height: 20px;
+      background: radial-gradient(circle, #38bdf8, transparent);
+      border-radius: 50%;
+      transform: scale(0);
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <h1>🎲 Kostyashki — Dice Clash</h1>
+    <div class="dice-box">
+      <div class="die" id="die1">1</div>
+      <div class="die" id="die2">2</div>
+    </div>
+    <button class="btn" id="rollBtn">Tashlash 🎲</button>
+
+    <div class="scoreboard">
+      <p>Jami ball:</p>
+      <div class="score" id="score">0</div>
+    </div>
+
+    <div class="history" id="history"></div>
+    <div class="spark" id="spark"></div>
+  </div>
+
+  <script>
+    const die1 = document.getElementById('die1');
+    const die2 = document.getElementById('die2');
+    const rollBtn = document.getElementById('rollBtn');
+    const scoreEl = document.getElementById('score');
+    const historyEl = document.getElementById('history');
+    const spark = document.getElementById('spark');
+
+    let score = 0;
+
+    function randomDice() {
+      return Math.floor(Math.random() * 6) + 1;
+    }
+
+    function createSpark() {
+      spark.style.transform = 'scale(1.5)';
+      spark.style.opacity = '1';
+      setTimeout(() => {
+        spark.style.transform = 'scale(0)';
+        spark.style.opacity = '0';
+      }, 300);
+    }
+
+    rollBtn.addEventListener('click', () => {
+      rollBtn.disabled = true;
+
+      die1.classList.add('roll');
+      die2.classList.add('roll');
+      createSpark();
+
+      setTimeout(() => {
+        die1.classList.remove('roll');
+        die2.classList.remove('roll');
+
+        const d1 = randomDice();
+        const d2 = randomDice();
+
+        die1.textContent = d1;
+        die2.textContent = d2;
+
+        const roundScore = d1 + d2;
+        score += roundScore;
+        scoreEl.textContent = score;
+
+        const log = document.createElement('div');
+        log.textContent = `🎯 ${d1} + ${d2} = ${roundScore} | Jami: ${score}`;
+        historyEl.prepend(log);
+
+        rollBtn.disabled = false;
+      }, 800);
+    });
+  </script>
+</body>
+</html>
