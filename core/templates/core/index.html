@@ -1,16 +1,215 @@
 <!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Posts</title></head>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Магазин телефонов — Главная</title>
+  <style>
+    :root{--accent:#0ea5a4;--muted:#6b7280;--bg:#f8fafc}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0;background:var(--bg);color:#0f172a}
+    header{background:#fff;box-shadow:0 2px 6px rgba(2,6,23,0.06);position:sticky;top:0;z-index:10}
+    .container{max-width:1100px;margin:0 auto;padding:1rem}
+    .nav{display:flex;align-items:center;justify-content:space-between}
+    .brand{display:flex;gap:.75rem;align-items:center}
+    .logo{width:42px;height:42px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#06b6d4);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    nav a{margin-left:1rem;color:var(--muted);text-decoration:none;font-weight:600}
+    .search{flex:1;margin:0 1rem;display:flex}
+    .search input{flex:1;padding:.6rem .75rem;border:1px solid #e6edf3;border-radius:8px 0 0 8px}
+    .search button{padding:.6rem .9rem;border:1px solid #e6edf3;border-left:0;background:var(--accent);color:#fff;border-radius:0 8px 8px 0}
+
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:1.25rem;align-items:center;padding:2.25rem 0}
+    .hero-card{background:#fff;padding:1.5rem;border-radius:12px;box-shadow:0 6px 20px rgba(2,6,23,0.06)}
+    .hero h1{margin:0 0 .5rem;font-size:1.6rem}
+    .hero p{margin:0;color:var(--muted)}
+    .cta{margin-top:1rem;display:flex;gap:.75rem}
+    .btn{padding:.6rem .9rem;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .btn-primary{background:var(--accent);color:#fff}
+    .btn-ghost{background:transparent;border:1px solid #e6edf3}
+
+    .filters{display:flex;gap:.75rem;flex-wrap:wrap;margin:1rem 0}
+    .card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
+    .phone-card{background:#fff;padding:1rem;border-radius:10px;box-shadow:0 6px 18px rgba(2,6,23,0.04);display:flex;flex-direction:column}
+    .phone-card img{width:100%;height:180px;object-fit:contain}
+    .phone-info{display:flex;justify-content:space-between;align-items:center;margin-top:.6rem}
+    .price{font-weight:800}
+    .muted{color:var(--muted);font-size:.9rem}
+    footer{padding:1.25rem 0;margin-top:2rem;color:var(--muted);text-align:center}
+
+    /* responsive */
+    @media(max-width:880px){.hero{grid-template-columns:1fr;}.search{display:none}}
+  </style>
+</head>
 <body>
-  <h1>Posts</h1>
-  {% for post in posts %}
-    <article>
-      <h2>{{ post.title }}</h2>
-      <p>{{ post.body|linebreaks }}</p>
-      <small>{{ post.created_at }}</small>
-    </article>
-  {% empty %}
-    <p>No posts yet.</p>
-  {% endfor %}
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo">MF</div>
+        <div>
+          <div style="font-weight:800">MobileFayz</div>
+          <div style="font-size:.85rem;color:var(--muted)">Лучшие телефоны по честным ценам</div>
+        </div>
+      </div>
+      <div class="search" role="search">
+        <input id="searchInput" placeholder="Поиск: модель, бренд...">
+        <button onclick="applySearch()">Поиск</button>
+      </div>
+      <nav>
+        <a href="#products">Товары</a>
+        <a href="#about">О нас</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-card">
+        <h1>Купите идеальный телефон — быстро, просто и безопасно</h1>
+        <p>У нас большой выбор смартфонов: от бюджетных до флагманских. Гарантия, доставка и помощь в рассрочке.</p>
+        <div class="cta">
+          <button class="btn btn-primary" onclick="scrollToProducts()">Смотреть телефоны</button>
+          <button class="btn btn-ghost" onclick="openContact()">Связаться</button>
+        </div>
+
+        <div style="margin-top:1rem;display:flex;gap:1rem;align-items:center">
+          <div style="display:flex;flex-direction:column">
+            <strong>Гарантия</strong>
+            <span class="muted">12 месяцев на все устройства</span>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <strong>Доставка</strong>
+            <span class="muted">По всему Узбекистану</span>
+          </div>
+          <div style="display:flex;flex-direction:column">
+            <strong>Оплата</strong>
+            <span class="muted">Нал / Онлайн / Рассрочка</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=800&q=60" alt="phone" style="width:100%;border-radius:12px;box-shadow:0 10px 30px rgba(2,6,23,0.06)">
+      </div>
+    </section>
+
+    <section id="products">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin:1rem 0">
+        <h2 style="margin:0">Популярные телефоны</h2>
+        <div class="filters">
+          <select id="filterBrand" onchange="applyFilters()">
+            <option value="all">Все бренды</option>
+            <option>Samsung</option>
+            <option>Apple</option>
+            <option>Xiaomi</option>
+            <option>Realme</option>
+          </select>
+          <select id="filterPrice" onchange="applyFilters()">
+            <option value="all">Любая цена</option>
+            <option value="0-200">до 200$</option>
+            <option value="200-500">200–500$</option>
+            <option value="500-2000">500$+</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="card-grid" id="productGrid">
+        <!-- product cards injected by JS -->
+      </div>
+    </section>
+
+    <section id="about" style="margin-top:1.5rem">
+      <div class="hero-card">
+        <h3>О магазине</h3>
+        <p class="muted">Мы — локальный магазин мобильной электроники с фокусом на честные цены и сервис. Каждый телефон проходит проверку перед отправкой. Нужна помощь с выбором — напишите нам.</p>
+      </div>
+    </section>
+
+    <section id="contact" style="margin-top:1rem">
+      <div class="hero-card">
+        <h3>Контакты</h3>
+        <p class="muted">Телефон: +998 90 000 00 00 · Email: info@mobilefayz.uz</p>
+        <p class="muted">Адрес: Ташкент, улица Примерная, 12</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      © 2025 MobileFayz — Магазин телефонов. Все права защищены.
+    </div>
+  </footer>
+
+  <script>
+    const products = [
+      {id:1,name:'Samsung Galaxy A54',brand:'Samsung',price:299,img:'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=60'},
+      {id:2,name:'Apple iPhone 14',brand:'Apple',price:799,img:'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=60'},
+      {id:3,name:'Xiaomi Redmi Note 12',brand:'Xiaomi',price:199,img:'https://images.unsplash.com/photo-1510557880182-3a935d9b1e3d?auto=format&fit=crop&w=600&q=60'},
+      {id:4,name:'Realme GT Neo',brand:'Realme',price:349,img:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=60'},
+      {id:5,name:'Apple iPhone SE',brand:'Apple',price:429,img:'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=600&q=60'}
+    ];
+
+    function formatPrice(p){ return p + "$" }
+
+    function renderProducts(list){
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+      list.forEach(p=>{
+        const card = document.createElement('div'); card.className='phone-card';
+        card.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <div style="margin-top:.6rem">
+            <div style="font-weight:700">${p.name}</div>
+            <div class="muted">${p.brand}</div>
+            <div class="phone-info">
+              <div class="price">${formatPrice(p.price)}</div>
+              <div>
+                <button class="btn btn-ghost" onclick="viewDetails(${p.id})">Подробнее</button>
+                <button class="btn btn-primary" onclick="buyNow(${p.id})">Купить</button>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      })
+    }
+
+    function applyFilters(){
+      const brand = document.getElementById('filterBrand').value;
+      const price = document.getElementById('filterPrice').value;
+      let filtered = products.slice();
+      if(brand !== 'all') filtered = filtered.filter(p=>p.brand===brand);
+      if(price !== 'all'){
+        const [min,max] = price.split('-').map(Number);
+        filtered = filtered.filter(p=> p.price >= min && p.price <= (isNaN(max)?99999:max));
+      }
+      renderProducts(filtered);
+    }
+
+    function applySearch(){
+      const q = document.getElementById('searchInput').value.trim().toLowerCase();
+      if(!q){ renderProducts(products); return }
+      const res = products.filter(p=> (p.name + ' ' + p.brand).toLowerCase().includes(q));
+      renderProducts(res);
+    }
+
+    function viewDetails(id){
+      const p = products.find(x=>x.id===id);
+      alert(`${p.name}\nБренд: ${p.brand}\nЦена: ${formatPrice(p.price)}\n\nСвязаться для заказа: +998 90 000 00 00`);
+    }
+
+    function buyNow(id){
+      const p = products.find(x=>x.id===id);
+      const confirmed = confirm(`Купить ${p.name} за ${formatPrice(p.price)}?`);
+      if(confirmed) alert('Спасибо! Мы свяжемся с вами по телефону для подтверждения.');
+    }
+
+    function scrollToProducts(){ document.getElementById('products').scrollIntoView({behavior:'smooth'}); }
+    function openContact(){ document.getElementById('contact').scrollIntoView({behavior:'smooth'}); }
+
+    // initial render
+    renderProducts(products);
+  </script>
 </body>
 </html>
